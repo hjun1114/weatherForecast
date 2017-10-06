@@ -39,9 +39,21 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 							},
 							{
 								get: {method: "JSONP"}
-							})
-							$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt:2 });
+							});
+
+							$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt:5 });
+							// call the api and save it in a scope variable with some options.
+							var temp1 = $scope.weatherResult.list
 							console.log($scope.weatherResult);
+
+							$scope.toCelsius = function(klvin) {
+								return Math.round(klvin - 273.15);
+							}
+
+							$scope.toDate = function(dateNum) {
+								return new Date(dateNum*1000); //its in milisecond, so multiply by 1000
+							}
+							
 						});
 
 // http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=4e57b5e64064ea5cab3cb2b7e56449d0
