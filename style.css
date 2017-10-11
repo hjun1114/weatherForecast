@@ -1,1 +1,10 @@
 
+br {
+	margin: 1 em;
+}
+
+.on-result {
+	color: ##2b538e; 
+	text-decoration: underline;
+	font-weight: bold;
+}

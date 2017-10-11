@@ -1,7 +1,7 @@
 // module
 var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 
-						.config(function ($routeProvider, $routeParams){
+						.config(function ($routeProvider){
 
 							$routeProvider
 
@@ -16,7 +16,7 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 							})
 
 							.when('/forecast/:days', {
-								templateUrl: "./pages/forecast.html"
+								templateUrl: "./pages/forecast.html",
 								controller: 'forecastController'
 							})
 
@@ -29,17 +29,21 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 						// when you want to change multiple data at once, you need to understand this concept. 
 
 						.controller('homeController', function($scope, cityService){
+
 							$scope.city = cityService.city;
+
 							$scope.$watch('city', function(){
 								cityService.city = $scope.city;
 							});
+
 						})
 
 						.controller('forecastController', function($scope, $resource, cityService, $routeParams){
 							
-							$scope.days = $routeParams.days || 2; 
 
 							$scope.city = cityService.city;
+
+							$scope.days = $routeParams.days || '5';
 
 							$scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=4e57b5e64064ea5cab3cb2b7e56449d0", 
 							{
@@ -55,7 +59,6 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 							// call the api and save it in a scope variable with some options.
 
 							var temp1 = $scope.weatherResult.list
-							console.log($scope.weatherResult);
 
 							$scope.toCelsius = function(klvin) {
 								return Math.round(klvin - 273.15);
