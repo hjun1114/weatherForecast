@@ -43,8 +43,7 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 
 							$scope.city = cityService.city;
 
-							$scope.days = $routeParams.days || '5';
-
+							$scope.days = $routeParams.days || '5'
 							$scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=4e57b5e64064ea5cab3cb2b7e56449d0", 
 							{
 								callback: "JSON_CALLBACK"
@@ -58,6 +57,8 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 							$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days });
 							// call the api and save it in a scope variable with some options.
 
+							console.log($scope.weatherResult); 
+
 							var temp1 = $scope.weatherResult.list
 
 							$scope.toCelsius = function(klvin) {
@@ -68,6 +69,21 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 								return new Date(dateNum*1000); //its in milisecond, so multiply by 1000
 							}
 							
+						})
+
+						.directive('weatherResult', function(){
+							return {
+								restrict: 'E',
+								templateUrl: './directive/weatherResult.html',
+								replace: true,
+								scope: {
+									weatherResult: "=",
+									toCelsius: "&",
+									toDate: "&",
+									formatDate: "@",
+									specificTime: "@"
+								}
+							}
 						});
 
 // http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=4e57b5e64064ea5cab3cb2b7e56449d0
