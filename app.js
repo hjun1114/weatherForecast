@@ -6,29 +6,23 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 							$routeProvider
 
 							.when('/', {
-								templateUrl: './pages/home.html',
-								controller: 'homeController'
+								templateUrl: './pages/searchForecast.html',
+								controller: 'searchController'
 							})
 
-							.when('/forecast', {
-								templateUrl: './pages/forecast.html',
-								controller: 'forecastController'
+							.when('/resultForecast', {
+								templateUrl: './pages/resultForecast.html',
+								controller: 'resultController'
 							})
 
-							.when('/forecast/:days', {
-								templateUrl: "./pages/forecast.html",
-								controller: 'forecastController'
+							.when('/resultForecast/:days', {
+								templateUrl: "./pages/resultForecast.html",
+								controller: 'resultController'
 							})
 
 						})
 
-						.service('cityService', function(){
-							this.city = "Montreal, QC";
-						})
-						// Use of service here is to bind the city variable with a singleton object: cityService. 
-						// when you want to change multiple data at once, you need to understand this concept. 
-
-						.controller('homeController', function($scope, cityService){
+						.controller('searchController', function($scope, cityService){
 
 							$scope.city = cityService.city;
 
@@ -38,28 +32,14 @@ var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource'])
 
 						})
 
-						.controller('forecastController', function($scope, $resource, cityService, $routeParams){
+						.controller('resultController', function($scope, cityService, $routeParams, weatherAPIService){
 							
 
 							$scope.city = cityService.city;
 
 							$scope.days = $routeParams.days || '5'
-							$scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=4e57b5e64064ea5cab3cb2b7e56449d0", 
-							{
-								callback: "JSON_CALLBACK"
-							},
-							{
-								get: {method: "JSONP"}
-							});
-							// resource services makes it easier for us to go out and get data.
-							// basically wraps up the http service 
 
-							$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days });
-							// call the api and save it in a scope variable with some options.
-
-							console.log($scope.weatherResult); 
-
-							var temp1 = $scope.weatherResult.list
+							$scope.weatherResult = weatherAPIService.getWeather($scope.city, $scope.days);
 
 							$scope.toCelsius = function(klvin) {
 								return Math.round(klvin - 273.15);

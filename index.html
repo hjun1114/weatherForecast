@@ -16,6 +16,7 @@
 	<script src="./source/angular-resource.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
 	<script src="./app.js"></script>
+	<script src="./services/services.js"></script>
 
 </head>
 
@@ -28,12 +29,12 @@
 					<a href="#/" class="navbar-brand">Weather Forecast</a>
 				</div>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+					<li><a href="#/"><i class="fa fa-home"></i>Home</a></li>
 				</ul>
 			</div>
 		</nav>
 	</header>
-
+	<!-- this header is going to be always same, thus changing below container asynchronously is ideal -->
 	<div class="container">
 		<div ng-view></div>
 	</div>
